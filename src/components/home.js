@@ -25,12 +25,7 @@ const Home = () => {
           onChange={handlePinValueChange}
           autoFocus
         />
-        <PinButton
-          type="submit"
-          value="Submit"
-          className="enter-button__EnterButton-sc-1o9b9va-0 kfzgPK"
-          data-functional-selector="join-game-pin"
-        >
+        <PinButton>
           Enter
         </PinButton>
       </Container>
