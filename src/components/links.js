@@ -5,6 +5,8 @@ import NameHeader from './common/NameHeader';
 import OuterContainer from './common/OuterContainer';
 import PinButton from './common/PinButton';
 import PinInput from './common/PinInput';
+import PinnedLink from "./common/PinnedLink";
+import PinnedList from "./common/PinnedList";
 
 import '../pin.css';
 
@@ -43,16 +45,15 @@ const Links = () => {
     <OuterContainer>
       <Container>
         {pinnedValues && (
-          <ul className={'pinned-values'}>
-          {pinnedValues.map(({title, url}, index) => {
-            return (
-              <li key={index}>
-                <a target="_blank" rel="noreferrer" href={url}>{title ? title : url}</a>
-                <span className="delete-button" onClick={() => handleDeleteClicked(index)}>X</span>
-              </li>
-            )
-          })}
-        </ul>
+          <PinnedList>
+            {pinnedValues.map((props, index) => (
+              <PinnedLink
+                handleDelete={() => handleDeleteClicked(index)}
+                key={index}
+                {...props}
+              />
+            ))}
+          </PinnedList>
         )}
         <NameHeader>
           {pinCode}
@@ -93,3 +94,4 @@ const Links = () => {
 }
 
 export default Links;
+
