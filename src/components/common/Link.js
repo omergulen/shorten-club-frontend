@@ -1,17 +1,14 @@
 import React from "react";
-import styled from "@emotion/styled";
-
-const Anchor = styled.a`
-`;
+import { OutboundLink } from "gatsby-plugin-google-analytics"
 
 const Link = ({ title, url }) => (
-  <Anchor
+  <OutboundLink
     target="_blank"
     rel="noreferrer"
     href={url}
   >
     {title ? title : url}
-  </Anchor>
+  </OutboundLink>
 );
 
 export default Link;
