@@ -1,9 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: `Julia Doe`,
-    subtitle: `software developer`,
-    description: `A minimal blog starter built with Gatsbyjs. The needed Gatsby files are included.`,
-    author: `@niklasmtj`,
+    title: `shorten.club`,
+    subtitle: `A readable URL shortener for Clubhouse rooms.`,
+    description: `Easy way to share notes and links with your listeners in Clubhouse. A readable URL shortener.`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
