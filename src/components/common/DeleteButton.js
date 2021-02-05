@@ -4,7 +4,9 @@ const DeleteButton = styled.span`
   cursor: pointer;
   float: right;
   font-weight: 800;
-  margin-right: 10px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 
   &:hover {
     color: red;
