@@ -7,19 +7,19 @@ import PinButton from './common/PinButton';
 import PinInput from './common/PinInput';
 import PinnedList from './common/PinnedList';
 import PinnedNote from './common/PinnedNote';
-import PinNote from './common/PinNote';
+import PinTextarea from './common/PinTextarea';
 
 import '../pin.css';
 
 
 
 const Notes = () => {
-  const [pinValue, setPinValue] = useState('');
+  const [pinNote, setPinNote] = useState('');
   const [pinTitle, setPinTitle] = useState('');
   const [pinnedValues, setPinnedValues] = useState([]);
 
-  const handlePinValueChange = (event) => {
-    setPinValue(event.target.value);
+  const handlePinNoteValueChange = (event) => {
+    setPinNote(event.target.value);
   };
 
   const handlePinTitleValueChange = (event) => {
@@ -27,15 +27,16 @@ const Notes = () => {
   };
 
   const handleAddClicked = () => {
-    if (pinTitle || pinValue) {
+    if (pinTitle || pinNote) {
       setPinnedValues([
-        {title: pinTitle, note: pinValue},
+        {title: pinTitle, note: pinNote},
         ...pinnedValues,
       ]);
-      setPinValue('');
+      setPinNote('');
       setPinTitle('');
     }
   };
+
   const handleDeleteClicked = (index) => {
     const array = [...pinnedValues]; // make a separate copy of the array
     array.splice(index, 1);
@@ -62,28 +63,20 @@ const Notes = () => {
           {pinCode}
         </NameHeader>
         <PinInput
-          name="pin-description"
-          type="tel"
-          placeholder="Title"
-          id="description-input"
-          className="sc-dlfnbm lflLbn"
           autocomplete="off"
-          value={pinTitle}
-          onChange={handlePinTitleValueChange}
-          aria-expanded="false"
           autoFocus
+          onChange={handlePinTitleValueChange}
+          placeholder="Title"
+          type="tel"
+          value={pinTitle}
         />
-        <PinNote
+        <PinTextarea
+          onChange={handlePinNoteValueChange}
           placeholder="Note..."
-          id="pin-input"
-          className="sc-dlfnbm lflLbn"
-          autocomplete="off"
-          value={pinValue}
-          rows={10}
-          onChange={handlePinValueChange}
+          rows={2}
+          value={pinNote}
         />
         <PinButton
-          className="enter-button__EnterButton-sc-1o9b9va-0 kfzgPK"
           onClick={handleAddClicked}
         >
           Add
