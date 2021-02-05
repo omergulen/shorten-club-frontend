@@ -6,7 +6,7 @@ const Title = styled.h5`
   display: block;
   line-height: 1%.4rem;
   margin: 0;
-  padding: 16px 4px;
+  padding: 0.3rem 0.2rem;
 `;
 
 export default Title;

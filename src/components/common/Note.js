@@ -5,7 +5,7 @@ const Note = styled.h1`
   font-size: 1rem;
   font-weight: 500;
   line-height: 1.4rem;
-  padding: 16px 4px;
+  padding: 0.3rem 0.2rem;
   word-wrap: break-word;
 `;
 
