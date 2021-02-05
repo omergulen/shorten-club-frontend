@@ -10,7 +10,7 @@ const PinButton = styled.button`
   font-family: 'Montserrat', sans-serif;
   font-size: 20px;
   font-weight: 700;
-  margin: 12px auto auto auto;
+  margin: auto;
   min-height: 3.2rem;
   min-width: 6.25rem;
   outline: 0;

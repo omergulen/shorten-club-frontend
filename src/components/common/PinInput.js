@@ -9,6 +9,7 @@ const PinInput = styled.input`
   font-weight: 700;
   height: 3.2rem;
   line-height: 3.2rem;
+  margin-bottom: 12px;
   min-width: 6.25rem;
   padding: 0.25rem 0.375rem;
   outline: none;
