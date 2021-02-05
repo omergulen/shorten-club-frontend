@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-starter-julia",
+  "name": "shorten-club-frontend",
   "private": true,
-  "description": "A minimal blog template built with Gatsby",
+  "description": "A readable URL shortener for Clubhouse rooms.",
   "version": "0.1.0",
-  "author": "Niklas Metje <hi@niklasmtj.de>",
+  "author": "Omer Gulen <omrglen@gmail.com>",
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
