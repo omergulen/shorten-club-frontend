@@ -8,8 +8,6 @@ import PinInput from './common/PinInput';
 import PinnedLink from "./common/PinnedLink";
 import PinnedList from "./common/PinnedList";
 
-import '../pin.css';
-
 const Links = () => {
   const [pinValue, setPinValue] = useState('');
   const [pinTitle, setPinTitle] = useState('');

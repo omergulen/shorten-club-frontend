@@ -5,8 +5,6 @@ import OuterContainer from './common/OuterContainer';
 import PinButton from './common/PinButton';
 import PinInput from './common/PinInput';
 
-import '../pin.css';
-
 const Home = () => {
   const [pinValue, setPinValue] = useState('');
 

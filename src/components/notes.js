@@ -9,10 +9,6 @@ import PinnedList from './common/PinnedList';
 import PinnedNote from './common/PinnedNote';
 import PinTextarea from './common/PinTextarea';
 
-import '../pin.css';
-
-
-
 const Notes = () => {
   const [pinNote, setPinNote] = useState('');
   const [pinTitle, setPinTitle] = useState('');
