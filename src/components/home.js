@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-import Container from './Container';
-import OuterContainer from './OuterContainer';
-import PinButton from './PinButton';
-import PinInput from './PinInput';
+import Container from './common/Container';
+import OuterContainer from './common/OuterContainer';
+import PinButton from './common/PinButton';
+import PinInput from './common/PinInput';
 
 import '../pin.css';
 

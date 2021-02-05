@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 
-import Container from './Container';
-import NameHeader from './NameHeader';
-import OuterContainer from './OuterContainer';
-import PinButton from './PinButton';
-import PinInput from './PinInput';
+import Container from './common/Container';
+import NameHeader from './common/NameHeader';
+import OuterContainer from './common/OuterContainer';
+import PinButton from './common/PinButton';
+import PinInput from './common/PinInput';
 
 import '../pin.css';
 
