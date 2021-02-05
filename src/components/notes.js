@@ -5,6 +5,8 @@ import NameHeader from './common/NameHeader';
 import OuterContainer from './common/OuterContainer';
 import PinButton from './common/PinButton';
 import PinInput from './common/PinInput';
+import PinnedList from './common/PinnedList';
+import PinnedNote from './common/PinnedNote';
 import PinNote from './common/PinNote';
 
 import '../pin.css';
@@ -46,19 +48,15 @@ const Notes = () => {
     <OuterContainer>
       <Container>
         {pinnedValues && (
-          <ul className={'pinned-values'}>
-          {pinnedValues.map(({title, note}, index) => {
-            return (
-              <li className="note" key={index}>
-                <p className="delete-button" onClick={() => handleDeleteClicked(index)}>X</p>
-                {title && (<p className="note-title">{title}</p>)}
-                <p className="note-text">
-                  {note}
-                </p>
-              </li>
-            )
-          })}
-        </ul>
+          <PinnedList>
+          {pinnedValues.map((props, index) => (
+            <PinnedNote
+              handleDelete={() => handleDeleteClicked(index)}
+              key={index}
+              {...props}
+            />
+          ))}
+        </PinnedList>
         )}
         <NameHeader>
           {pinCode}
