@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import Container from './common/Container';
 import NameHeader from './common/NameHeader';
@@ -9,10 +9,48 @@ import PinnedList from './common/PinnedList';
 import PinnedNote from './common/PinnedNote';
 import PinTextarea from './common/PinTextarea';
 
-const Notes = () => {
+import { getRecord, initialSlug, updateRecord } from "../api";
+
+const Notes = ({ id, location }) => {
+  const [slug, setSlug] = useState('');
   const [pinNote, setPinNote] = useState('');
   const [pinTitle, setPinTitle] = useState('');
   const [pinnedValues, setPinnedValues] = useState([]);
+  const [permissions, setPermissions] = useState({
+    readContent: true,
+    updateContent: true
+  });
+
+  useEffect(() => {
+    const _getRecord = async (id) => {
+      const res = await getRecord(id);
+      const { record: { content, slug }, permissions } = res.data;
+      setPermissions(permissions);
+      setSlug(slug);
+      setPinnedValues(content);
+    }
+
+    const _createRecord = async () => {
+      const res = await initialSlug('NOTE');
+      const { record: { content, slug }, permissions } = res.data;
+      setPermissions(permissions);
+      setSlug(slug);
+      setPinnedValues(content);
+    }
+
+    const { state: { data } } = location;
+    if (data) {
+      const { record: { content, slug }, permissions } = data;
+      setPermissions(permissions);
+      setSlug(slug);
+      setPinnedValues(content);
+    } else if (id) {
+      _getRecord(id);
+    } else {
+      _createRecord();
+    }
+  }, [id]);
+
 
   const handlePinNoteValueChange = (event) => {
     setPinNote(event.target.value);
@@ -24,12 +62,15 @@ const Notes = () => {
 
   const handleAddClicked = () => {
     if (pinTitle || pinNote) {
-      setPinnedValues([
+      const newPinnedValues = [
         {title: pinTitle, note: pinNote},
         ...pinnedValues,
-      ]);
+      ];
+      setPinnedValues(newPinnedValues);
       setPinNote('');
       setPinTitle('');
+
+      updateRecord(slug, newPinnedValues);
     }
   };
 
@@ -39,25 +80,24 @@ const Notes = () => {
     setPinnedValues(array);
   };
 
-  const pinCode = '123456';
-
   return (
     <OuterContainer>
       <Container>
-        {pinnedValues && (
+        <NameHeader>
+          {slug}
+        </NameHeader>
+        {permissions.readContent && pinnedValues && (
           <PinnedList>
           {pinnedValues.map((props, index) => (
             <PinnedNote
               handleDelete={() => handleDeleteClicked(index)}
+              updateContent={permissions.updateContent}
               key={index}
               {...props}
             />
           ))}
         </PinnedList>
         )}
-        <NameHeader>
-          {pinCode}
-        </NameHeader>
         <PinInput
           autocomplete="off"
           autoFocus
