@@ -1,15 +1,36 @@
 import React, { useState } from "react";
+import { navigate } from 'gatsby';
 
 import Container from './common/Container';
 import OuterContainer from './common/OuterContainer';
 import PinButton from './common/PinButton';
 import PinInput from './common/PinInput';
 
-const Home = () => {
+import { getRecord } from '../api';
+
+const Home = (props) => {
+  console.log('props: ', props);
   const [pinValue, setPinValue] = useState('');
 
   const handlePinValueChange = (event) => {
     setPinValue(event.target.value);
+  };
+
+  const handleEnterClick = async () => {
+    const mapping = {
+      'LINK': 'links',
+      'NNOTE': 'notes',
+    };
+    const res = await getRecord(pinValue);
+    const { record: { slug, type } } = res.data;
+    navigate(
+      `${mapping[type]}/${slug}`,
+      {
+        state: { 
+          data: res.data
+         },
+      }
+    )
   };
 
   return (
@@ -23,7 +44,9 @@ const Home = () => {
           onChange={handlePinValueChange}
           autoFocus
         />
-        <PinButton>
+        <PinButton
+          onClick={handleEnterClick}
+        >
           Enter
         </PinButton>
       </Container>
