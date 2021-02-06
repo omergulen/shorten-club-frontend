@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
 import Container from './common/Container';
 import NameHeader from './common/NameHeader';
@@ -8,10 +8,51 @@ import PinInput from './common/PinInput';
 import PinnedLink from "./common/PinnedLink";
 import PinnedList from "./common/PinnedList";
 
-const Links = () => {
+import { getRecord, initialSlug, updateRecord } from "../api";
+
+const Links = ({ id, location }) => {
+  const [slug, setSlug] = useState('');
   const [pinValue, setPinValue] = useState('');
   const [pinTitle, setPinTitle] = useState('');
   const [pinnedValues, setPinnedValues] = useState([]);
+  const [permissions, setPermissions] = useState({
+    readContent: true,
+    updateContent: true
+  });
+
+  useEffect(() => {
+    const _getRecord = async (id) => {
+      const res = await getRecord(id);
+      const { record: { content, slug }, permissions } = res.data;
+      setPermissions(permissions);
+      setSlug(slug);
+      setPinnedValues(content);
+    }
+
+    const _createRecord = async () => {
+      const res = await initialSlug('LINK');
+      const { record: { content, slug }, permissions } = res.data;
+      let _content = JSON.parse(content);
+      if (Object.keys(_content).length < 1) {
+        _content = [];
+      }
+      setPermissions(permissions);
+      setSlug(slug);
+      setPinnedValues(_content);
+    }
+
+    const { state: { data } } = location;
+    if (data) {
+      const { record: { content, slug }, permissions } = data;
+      setPermissions(permissions);
+      setSlug(slug);
+      setPinnedValues(content);
+    } else if (id) {
+      _getRecord(id);
+    } else {
+      _createRecord();
+    }
+  }, [id]);
 
   const handlePinValueChange = (event) => {
     setPinValue(event.target.value);
@@ -23,12 +64,15 @@ const Links = () => {
 
   const handleAddClicked = () => {
     if (pinTitle || pinValue) {
-      setPinnedValues([
+      const newPinnedValues = [
         {title: pinTitle, url: pinValue},
         ...pinnedValues,
-      ]);
+      ];
+      setPinnedValues(newPinnedValues);
       setPinValue('');
       setPinTitle('');
+
+      updateRecord(slug, newPinnedValues);
     }
   };
   const handleDeleteClicked = (index) => {
@@ -37,55 +81,58 @@ const Links = () => {
     setPinnedValues(array);
   };
 
-  const pinCode = '123456';
-
   return (
     <OuterContainer>
       <Container>
-        {pinnedValues && (
+        <NameHeader>
+          {slug}
+        </NameHeader>
+        {permissions.readContent && pinnedValues && (
           <PinnedList>
             {pinnedValues.map((props, index) => (
               <PinnedLink
                 handleDelete={() => handleDeleteClicked(index)}
+                updateContent={permissions.updateContent}
                 key={index}
                 {...props}
               />
             ))}
           </PinnedList>
         )}
-        <NameHeader>
-          {pinCode}
-        </NameHeader>
-        <PinInput
-          name="pin-description"
-          type="tel"
-          placeholder="Title"
-          id="description-input"
-          className="sc-dlfnbm lflLbn"
-          autocomplete="off"
-          value={pinTitle}
-          onChange={handlePinTitleValueChange}
-          aria-expanded="false"
-          autoFocus
-        />
-        <PinInput
-          name="pin"
-          type="tel"
-          placeholder="https://example.com"
-          id="pin-input"
-          className="sc-dlfnbm lflLbn"
-          autocomplete="off"
-          value={pinValue}
-          onChange={handlePinValueChange}
-          aria-expanded="false"
-          autoFocus
-        />
-        <PinButton
-          className="enter-button__EnterButton-sc-1o9b9va-0 kfzgPK"
-          onClick={handleAddClicked}
-        >
-          Add
-        </PinButton>
+        {permissions.updateContent && (
+          <>
+            <PinInput
+              name="pin-description"
+              type="tel"
+              placeholder="Title"
+              id="description-input"
+              className="sc-dlfnbm lflLbn"
+              autocomplete="off"
+              value={pinTitle}
+              onChange={handlePinTitleValueChange}
+              aria-expanded="false"
+              autoFocus
+            />
+            <PinInput
+              name="pin"
+              type="tel"
+              placeholder="https://example.com"
+              id="pin-input"
+              className="sc-dlfnbm lflLbn"
+              autocomplete="off"
+              value={pinValue}
+              onChange={handlePinValueChange}
+              aria-expanded="false"
+              autoFocus
+            />
+            <PinButton
+              className="enter-button__EnterButton-sc-1o9b9va-0 kfzgPK"
+              onClick={handleAddClicked}
+            >
+              Add
+            </PinButton>
+          </>
+        )}
       </Container>
     </OuterContainer>
   );
