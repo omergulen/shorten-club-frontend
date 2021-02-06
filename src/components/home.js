@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { navigate } from 'gatsby';
 
 import Container from './common/Container';
@@ -8,29 +8,38 @@ import PinInput from './common/PinInput';
 
 import { getRecord } from '../api';
 
-const Home = (props) => {
-  console.log('props: ', props);
+const Home = ({ id }) => {
   const [pinValue, setPinValue] = useState('');
 
-  const handlePinValueChange = (event) => {
-    setPinValue(event.target.value);
-  };
+  useEffect(() => {
+    if (id) {
+      handleSlugNavigation(id);
+    }
+  });
 
-  const handleEnterClick = async () => {
+  const handleSlugNavigation = async (_slug) => {
     const mapping = {
       'LINK': 'links',
       'NNOTE': 'notes',
     };
-    const res = await getRecord(pinValue);
+    const res = await getRecord(_slug);
     const { record: { slug, type } } = res.data;
     navigate(
-      `${mapping[type]}/${slug}`,
+      `/${mapping[type] ?? '/'}/${slug}`,
       {
         state: { 
           data: res.data
          },
       }
     )
+  };
+
+  const handleEnterClick = () => {
+    handleSlugNavigation(pinValue);
+  };
+
+  const handlePinValueChange = (event) => {
+    setPinValue(event.target.value);
   };
 
   return (
