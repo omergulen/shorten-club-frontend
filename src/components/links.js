@@ -32,13 +32,9 @@ const Links = ({ id, location }) => {
     const _createRecord = async () => {
       const res = await initialSlug('LINK');
       const { record: { content, slug }, permissions } = res.data;
-      let _content = JSON.parse(content);
-      if (Object.keys(_content).length < 1) {
-        _content = [];
-      }
       setPermissions(permissions);
       setSlug(slug);
-      setPinnedValues(_content);
+      setPinnedValues(content);
     }
 
     const { state: { data } } = location;
