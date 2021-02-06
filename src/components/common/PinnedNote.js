@@ -5,15 +5,17 @@ import Note from './Note';
 import PinnedItem from './PinnedItem';
 import Title from './Title';
 
-const PinnedNote = ({ title, note, handleDelete }) => (
+const PinnedNote = ({ title, note, handleDelete, updateContent }) => (
   <PinnedItem style={{
     lineHeight: '1rem',
     textAlign: 'left',
     color: '#333333',
   }}>
-    <DeleteButton onClick={handleDelete}>
-      X
-    </DeleteButton>
+    {updateContent && (
+      <DeleteButton onClick={handleDelete}>
+        X
+      </DeleteButton>
+    )}
     {title && (
       <Title>
         {title}

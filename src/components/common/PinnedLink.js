@@ -4,12 +4,14 @@ import DeleteButton from './DeleteButton';
 import Link from "./Link";
 import PinnedItem from './PinnedItem';
 
-const PinnedLink = ({ title, url, handleDelete }) => (
+const PinnedLink = ({ title, url, handleDelete, updateContent }) => (
   <PinnedItem>
     <Link title={title} url={url} />
-    <DeleteButton onClick={handleDelete}>
-      X
-    </DeleteButton>
+    {updateContent && (
+      <DeleteButton onClick={handleDelete}>
+        X
+      </DeleteButton>
+    )}
   </PinnedItem>
 );
 
