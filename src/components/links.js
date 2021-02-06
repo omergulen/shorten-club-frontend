@@ -98,31 +98,22 @@ const Links = ({ id, location }) => {
         {permissions.updateContent && (
           <>
             <PinInput
-              name="pin-description"
-              type="tel"
-              placeholder="Title"
-              id="description-input"
-              className="sc-dlfnbm lflLbn"
               autocomplete="off"
-              value={pinTitle}
-              onChange={handlePinTitleValueChange}
-              aria-expanded="false"
               autoFocus
+              onChange={handlePinTitleValueChange}
+              placeholder="Title"
+              type="tel"
+              value={pinTitle}
             />
             <PinInput
-              name="pin"
-              type="tel"
-              placeholder="https://example.com"
-              id="pin-input"
-              className="sc-dlfnbm lflLbn"
               autocomplete="off"
-              value={pinValue}
-              onChange={handlePinValueChange}
-              aria-expanded="false"
               autoFocus
+              placeholder="https://example.com"
+              type="tel"
+              onChange={handlePinValueChange}
+              value={pinValue}
             />
             <PinButton
-              className="enter-button__EnterButton-sc-1o9b9va-0 kfzgPK"
               onClick={handleAddClicked}
             >
               Add
