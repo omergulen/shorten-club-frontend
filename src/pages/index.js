@@ -5,9 +5,11 @@ import Home from "../components/home"
 import Links from "../components/links"
 import Notes from "../components/notes"
 import Layout from "../components/layout"
+import SEO from '../components/seo';
 
 const IndexPage = () => (
   <Layout>
+    <SEO keywords={[`clubhouse`, `url`, `shortener`, 'share']} />
     <Router>
       <Home path="/" />
       <Home path="/:id" />

@@ -12,7 +12,6 @@ import styled from "@emotion/styled";
 
 import { getAuthToken, initialSlug } from '../api';
 import Header from "./header";
-import SEO from './seo';
 
 const Content = styled.div`
   margin: 0 auto;
@@ -66,7 +65,6 @@ const Layout = ({ children }) => {
           <Header siteTitle={data.site.siteMetadata.title} />
           <Content>
             <main>
-              <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
               {children}
             </main>
             <Footer>
