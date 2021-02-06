@@ -3,6 +3,8 @@ import styled from "@emotion/styled"
 import PropTypes from "prop-types"
 import React from "react"
 
+import LinkIcon from '../images/link2.png';
+
 const Content = styled.div`
   max-width: 860px;
   padding: 1rem 1.0875rem;
@@ -62,6 +64,10 @@ const GitHubLink = styled.a`
 `
 
 const HomeLink = styled(NavLink)`
+  img {
+    width: 20px;
+    margin-right: 4px
+  }
   margin-left: 0;
 `
 
@@ -76,8 +82,11 @@ const Header = () => (
   <SiteHeader>
     <Content>
       <p>
-        <HomeLink to="/">Home</HomeLink>
-        <NavLink to="/links">Create Links</NavLink>
+        <HomeLink to="/">
+          <img src={LinkIcon} />
+          Home
+        </HomeLink> |
+        <NavLink to="/links">Create Links</NavLink> |
         <NavLink to="/notes">Create Notes</NavLink>
       </p>
     </Content>
