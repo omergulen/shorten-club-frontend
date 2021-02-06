@@ -35,7 +35,7 @@ const Layout = ({ children }) => {
 
   useEffect(() => {
     async function getInitials() {
-      const res = await initialSlug();
+      const res = await getAuthToken();
       const { token } = res.data;
       setAToken(token);
       window.localStorage.setItem('authToken', token);

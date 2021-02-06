@@ -35,13 +35,8 @@ const getRequest = (path, params) => {
   });
 };
 
-export const getAuthToken = () => {
-  getRequest('getAuthToken')
-    .then((response) => {
-      console.log('response: ', response);
-    }).catch((err) => {
-      console.log('err: ', err);
-    });
+export const getAuthToken = async () => {
+  return getRequest('/auth').then((res) => {return res;});
 };
 
 export const initialSlug = async (type) => {
