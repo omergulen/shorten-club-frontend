@@ -1,14 +1,23 @@
 import React from "react";
 import { OutboundLink } from "gatsby-plugin-google-analytics"
+import styled from "@emotion/styled";
 
-const Link = ({ title, url }) => (
-  <OutboundLink
+const _Link = ({ title, url }) => (
+  <Link
     target="_blank"
     rel="noreferrer"
     href={url}
   >
     {title ? title : url}
-  </OutboundLink>
+  </Link>
 );
 
-export default Link;
+const Link = styled(OutboundLink)`
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+export default _Link;
