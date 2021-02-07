@@ -48,8 +48,7 @@ const Links = ({ id, location }) => {
       setPinnedValues(content);
     }
 
-    const { state: { data } } = location;
-    if (data) {
+    if (location && location.state && location.state.data) {
       const { record: { content, slug }, permissions } = data;
       setPermissions(permissions);
       setSlug(slug);
