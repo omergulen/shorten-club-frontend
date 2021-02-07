@@ -631,3 +631,19 @@ a::selection {
         font-size: 100%;
     }
 }
+
+.slug-header {
+    &:after {
+        align-self: center;
+        background-image: url('../images/copy.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        content: '';
+        cursor: pointer;
+        display: inline-block;
+        height: 20px;
+        margin-left: 4px;
+        vertical-align: middle;
+        width: 20px;
+      }
+}

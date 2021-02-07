@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react"
+import React, { useCallback, useEffect, useState } from "react";
+import copy from 'copy-to-clipboard';
 
 import Container from './common/Container';
-import NameHeader from './common/NameHeader';
+import SlugHeader from './common/SlugHeader';
 import OuterContainer from './common/OuterContainer';
 import PinButton from './common/PinButton';
 import PinInput from './common/PinInput';
 import PinnedLink from "./common/PinnedLink";
 import PinnedList from "./common/PinnedList";
 
+import CopyIcon from '../images/copy.svg';
 import { getRecord, initialSlug, updateRecord } from "../api";
 
 const Links = ({ id, location }) => {
@@ -18,6 +20,16 @@ const Links = ({ id, location }) => {
   const [permissions, setPermissions] = useState({
     readContent: true,
     updateContent: true
+  });
+  const [isCopied, setIsCopied] = useState(false);
+  const handleAddressCopy = useCallback((event) => {
+      const slug = event.target.innerText;
+      const url = `https://shorten.club/links/${slug}`
+      copy(url);
+      setIsCopied(true);
+      setTimeout(() => {
+          setIsCopied(false);
+      }, 1500);
   });
 
   useEffect(() => {
@@ -80,9 +92,10 @@ const Links = ({ id, location }) => {
   return (
     <OuterContainer>
       <Container>
-        <NameHeader>
+        <SlugHeader onClick={handleAddressCopy}  className={'slug-header'}>
           {slug}
-        </NameHeader>
+        </SlugHeader>
+        {isCopied && <p>Copied</p>}
         {permissions.readContent && pinnedValues && (
           <PinnedList>
             {pinnedValues.map((props, index) => (
