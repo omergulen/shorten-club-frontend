@@ -24,7 +24,7 @@ const Notes = ({ id, location }) => {
   const [isCopied, setIsCopied] = useState(false);
   const handleAddressCopy = useCallback((event) => {
       const slug = event.target.innerText;
-      const url = `https://shorten.club/notes/${slug}`
+      const url = `https://shorten.club/${slug}`
       copy(url);
       setIsCopied(true);
       setTimeout(() => {

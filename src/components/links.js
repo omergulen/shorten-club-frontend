@@ -9,7 +9,6 @@ import PinInput from './common/PinInput';
 import PinnedLink from "./common/PinnedLink";
 import PinnedList from "./common/PinnedList";
 
-import CopyIcon from '../images/copy.svg';
 import { getRecord, initialSlug, updateRecord } from "../api";
 
 const Links = ({ id, location }) => {
@@ -24,7 +23,7 @@ const Links = ({ id, location }) => {
   const [isCopied, setIsCopied] = useState(false);
   const handleAddressCopy = useCallback((event) => {
       const slug = event.target.innerText;
-      const url = `https://shorten.club/links/${slug}`
+      const url = `https://shorten.club/${slug}`
       copy(url);
       setIsCopied(true);
       setTimeout(() => {
