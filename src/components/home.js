@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { navigate } from 'gatsby';
 
 import Container from './common/Container';
+import NameHeader from './common/NameHeader';
+import NameSubHeader from './common/NameSubHeader';
 import OuterContainer from './common/OuterContainer';
 import PinButton from './common/PinButton';
 import PinInput from './common/PinInput';
@@ -45,6 +47,12 @@ const Home = ({ id }) => {
   return (
     <OuterContainer>
       <Container>
+        <NameHeader>
+          Enter the PIN!
+        </NameHeader>
+        <NameSubHeader>
+          The PIN allows you to access various content.
+        </NameSubHeader>
         <PinInput
           type="tel"
           placeholder="PIN"
