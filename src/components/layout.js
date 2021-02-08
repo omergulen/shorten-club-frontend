@@ -31,10 +31,11 @@ const Footer = styled.footer`
 `
 
 const FooterRow = styled.div`
-  display: flex;
   justify-content: center;
+  text-align: center;
+
   a {
-    padding: 4px;
+    padding: 0px 4px;
   }
 `;
 
@@ -78,7 +79,7 @@ const Layout = ({ children }) => {
             </main>
             <Footer>
               <FooterRow>
-                Ask for a <b><a href="https://shorten.club">shorten.club</a></b> PIN in your Clubhouse room.
+                <b>Ask for a <a href="https://shorten.club">shorten.club</a> PIN <br/> in your Clubhouse room.</b>
               </FooterRow>
               <FooterRow>
               © {new Date().getFullYear()}, {`Built with <3`}
