@@ -9,12 +9,12 @@ import SEO from "../components/seo"
 const NotFoundPage = () => (
   <Layout>
     <SEO title="shorten.club" />
-    <OuterContainer>
+    {/* <OuterContainer>
       <Container>
         <h1>shorten.club</h1>
         <div className={'loading-spinner'}></div>
       </Container>
-      </OuterContainer>
+      </OuterContainer> */}
   </Layout>
 )
 
