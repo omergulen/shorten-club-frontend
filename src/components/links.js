@@ -113,14 +113,14 @@ const Links = ({ id, location }) => {
               autoFocus
               onChange={handlePinTitleValueChange}
               placeholder="Title"
-              type="tel"
+              type="text"
               value={pinTitle}
             />
             <PinInput
               autocomplete="off"
               autoFocus
               placeholder="https://example.com"
-              type="tel"
+              type="url"
               onChange={handlePinValueChange}
               value={pinValue}
             />

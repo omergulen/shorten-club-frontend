@@ -147,7 +147,7 @@ const Notes = ({ id, location }) => {
             autoFocus
             onChange={handlePinTitleValueChange}
             placeholder="Title"
-            type="tel"
+            type="text"
             value={pinTitle}
           />
           <PinTextarea
