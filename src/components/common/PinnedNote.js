@@ -28,17 +28,19 @@ const PinnedNote = ({
     {title && (
       <Title
         name={`note_title_${index}`}
-        value={title}
         onChange={handleTitleChange}
         onSave={handleNoteSave}
+        readonly={!updateContent}
+        value={title}
       />
     )}
     {note && (
       <Note
         name={`note_body_${index}`}
-        value={note}
         onChange={handleBodyChange}
         onSave={handleNoteSave}
+        readonly={!updateContent}
+        value={note}
       />
     )}
   </PinnedItem>
