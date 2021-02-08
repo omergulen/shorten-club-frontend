@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
+import { EditText } from 'react-edit-text';
 
-const Title = styled.h5`
+const Title = styled(EditText)`
   font-size: 1.4rem;
   font-weight: 700;
   display: block;

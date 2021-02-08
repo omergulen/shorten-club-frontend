@@ -5,7 +5,16 @@ import Note from './Note';
 import PinnedItem from './PinnedItem';
 import Title from './Title';
 
-const PinnedNote = ({ title, note, handleDelete, updateContent }) => (
+const PinnedNote = ({
+  handleDelete,
+  index,
+  note,
+  handleBodyChange,
+  handleTitleChange,
+  handleNoteSave,
+  title,
+  updateContent,
+}) => (
   <PinnedItem style={{
     lineHeight: '1rem',
     textAlign: 'left',
@@ -17,14 +26,20 @@ const PinnedNote = ({ title, note, handleDelete, updateContent }) => (
       </DeleteButton>
     )}
     {title && (
-      <Title>
-        {title}
-      </Title>
+      <Title
+        name={`note_title_${index}`}
+        value={title}
+        onChange={handleTitleChange}
+        onSave={handleNoteSave}
+      />
     )}
     {note && (
-      <Note>
-        {note}
-      </Note>
+      <Note
+        name={`note_body_${index}`}
+        value={note}
+        onChange={handleBodyChange}
+        onSave={handleNoteSave}
+      />
     )}
   </PinnedItem>
 );

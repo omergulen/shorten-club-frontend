@@ -22,15 +22,6 @@ const Notes = ({ id, location }) => {
     updateContent: true
   });
   const [isCopied, setIsCopied] = useState(false);
-  const handleAddressCopy = useCallback((event) => {
-      const slug = event.target.innerText;
-      const url = `https://shorten.club/${slug}`
-      copy(url);
-      setIsCopied(true);
-      setTimeout(() => {
-          setIsCopied(false);
-      }, 1500);
-  });
 
   useEffect(() => {
     const _getRecord = async (id) => {
@@ -70,6 +61,42 @@ const Notes = ({ id, location }) => {
     setPinTitle(event.target.value);
   };
 
+  const handleAddressCopy = useCallback((event) => {
+    const slug = event.target.innerText;
+    const url = `https://shorten.club/${slug}`
+    copy(url);
+    setIsCopied(true);
+    setTimeout(() => {
+        setIsCopied(false);
+    }, 1500);
+  });
+
+  const handlePinnedNoteTitleChange = (value, index) => {
+    if (!value) { return; }
+    const newPinnedValues = [...pinnedValues]; // make a separate copy of the newPinnedValues
+    const pinAtIndex = {
+      ...newPinnedValues[index],
+      title: value,
+    };
+    newPinnedValues.splice(index, 1, pinAtIndex);
+    setPinnedValues(newPinnedValues);
+  };
+
+  const handlePinnedNoteSave = (_, index) => {
+    updateRecord(slug, pinnedValues);
+  }
+
+  const handlePinnedNoteBodyChange = (value, index) => {
+    if (!value) { return; }
+    const newPinnedValues = [...pinnedValues]; // make a separate copy of the newPinnedValues
+    const pinAtIndex = {
+      ...newPinnedValues[index],
+      note: value,
+    };
+    newPinnedValues.splice(index, 1, pinAtIndex);
+    setPinnedValues(newPinnedValues);
+  };
+
   const handleAddClicked = () => {
     if (pinTitle || pinNote) {
       const newPinnedValues = [
@@ -102,6 +129,10 @@ const Notes = ({ id, location }) => {
           {pinnedValues.map((props, index) => (
             <PinnedNote
               handleDelete={() => handleDeleteClicked(index)}
+              handleBodyChange={(event) => handlePinnedNoteBodyChange(event, index)}
+              handleTitleChange={(event) => handlePinnedNoteTitleChange(event, index)}
+              handleNoteSave={(event) => handlePinnedNoteSave(event, index)}
+              index={index}
               updateContent={permissions.updateContent}
               key={index}
               {...props}
