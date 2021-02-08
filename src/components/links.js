@@ -18,6 +18,7 @@ const Links = ({ id, location }) => {
   const [pinValue, setPinValue] = useState('');
   const [pinTitle, setPinTitle] = useState('');
   const [pinnedValues, setPinnedValues] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [permissions, setPermissions] = useState({
     readContent: true,
     updateContent: true
@@ -40,6 +41,7 @@ const Links = ({ id, location }) => {
       setPermissions(permissions);
       setSlug(slug);
       setPinnedValues(content);
+      setLoading(false);
     }
 
     const _createRecord = async () => {
@@ -48,6 +50,7 @@ const Links = ({ id, location }) => {
       setPermissions(permissions);
       setSlug(slug);
       setPinnedValues(content);
+      setLoading(false);
     }
 
     if (location && location.state && location.state.data) {
@@ -55,6 +58,7 @@ const Links = ({ id, location }) => {
       setPermissions(permissions);
       setSlug(slug);
       setPinnedValues(content);
+      setLoading(false);
     } else if (id) {
       _getRecord(id);
     } else {
@@ -88,6 +92,16 @@ const Links = ({ id, location }) => {
     array.splice(index, 1);
     setPinnedValues(array);
   };
+
+  if (loading) {
+    return (
+      <OuterContainer>
+        <Container>
+          <div className={'loading-spinner'}></div>
+        </Container>
+      </OuterContainer>
+    );
+  }
 
   return (
     <OuterContainer>

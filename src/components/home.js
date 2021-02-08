@@ -12,10 +12,13 @@ import { getRecord } from '../api';
 
 const Home = ({ id }) => {
   const [pinValue, setPinValue] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (id) {
       handleSlugNavigation(id);
+    } else {
+      setLoading(false);
     }
   });
 
@@ -43,6 +46,16 @@ const Home = ({ id }) => {
   const handlePinValueChange = (event) => {
     setPinValue(event.target.value);
   };
+
+  if (loading) {
+    return (
+      <OuterContainer>
+        <Container>
+          <div className={'loading-spinner'}></div>
+        </Container>
+      </OuterContainer>
+    );
+  }
 
   return (
     <OuterContainer>
