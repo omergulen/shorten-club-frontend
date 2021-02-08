@@ -29,5 +29,5 @@ Currently, you can create buckets of links or notes. You can add, update, and de
 ## Examples
 
 - Upcoming Events: [WIP]
-- A bucket of movies to watch: [WIP]
+- A bucket of movies to watch: [https://shorten.club/665292](https://shorten.club/665292)
 - A bucket of resources for Saas Startups: [https://shorten.club/191626](https://shorten.club/191626)
