@@ -20,7 +20,7 @@ const Home = ({ id }) => {
   const handleSlugNavigation = async (_slug) => {
     const mapping = {
       'LINK': 'links',
-      'NNOTE': 'notes',
+      'NOTE': 'notes',
     };
     const res = await getRecord(_slug);
     const { record: { slug, type } } = res.data;
