@@ -19,7 +19,7 @@ const Notes = ({ id, location }) => {
   const [pinnedValues, setPinnedValues] = useState([]);
   const [permissions, setPermissions] = useState({
     readContent: true,
-    updateContent: true
+    updateContent: false
   });
   const [isCopied, setIsCopied] = useState(false);
 
@@ -140,25 +140,29 @@ const Notes = ({ id, location }) => {
           ))}
         </PinnedList>
         )}
-        <PinInput
-          autocomplete="off"
-          autoFocus
-          onChange={handlePinTitleValueChange}
-          placeholder="Title"
-          type="tel"
-          value={pinTitle}
-        />
-        <PinTextarea
-          onChange={handlePinNoteValueChange}
-          placeholder="Note..."
-          rows={2}
-          value={pinNote}
-        />
-        <PinButton
-          onClick={handleAddClicked}
-        >
-          Add
-        </PinButton>
+        {permissions.updateContent &&
+        <>
+          <PinInput
+            autocomplete="off"
+            autoFocus
+            onChange={handlePinTitleValueChange}
+            placeholder="Title"
+            type="tel"
+            value={pinTitle}
+          />
+          <PinTextarea
+            onChange={handlePinNoteValueChange}
+            placeholder="Note..."
+            rows={2}
+            value={pinNote}
+          />
+          <PinButton
+            onClick={handleAddClicked}
+          >
+            Add
+          </PinButton>
+        </>
+        }
       </Container>
     </OuterContainer>
   );
