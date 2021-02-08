@@ -26,8 +26,17 @@ const GatsbyLink = styled.a`
 
 const Footer = styled.footer`
   display: flex;
+  flex-direction: column;
   justify-content: center;
 `
+
+const FooterRow = styled.div`
+  display: flex;
+  justify-content: center;
+  a {
+    padding: 4px;
+  }
+`;
 
 const Layout = ({ children }) => {
   const [aToken, setAToken] = useState('');
@@ -68,9 +77,12 @@ const Layout = ({ children }) => {
               {children}
             </main>
             <Footer>
-              <p>
+              <FooterRow>
+                Ask for a <b><a href="https://shorten.club">shorten.club</a></b> PIN in your Clubhouse room.
+              </FooterRow>
+              <FooterRow>
               © {new Date().getFullYear()}, {`Built with <3`}
-              </p>
+              </FooterRow>
             </Footer>
           </Content>
         </>
