@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import copy from 'copy-to-clipboard';
 
 import Container from './common/Container';
+import NameHeader from './common/NameHeader';
+import NameSubHeader from './common/NameSubHeader';
 import SlugHeader from './common/SlugHeader';
 import OuterContainer from './common/OuterContainer';
 import PinButton from './common/PinButton';
@@ -94,7 +96,7 @@ const Links = ({ id, location }) => {
           {slug}
         </SlugHeader>
         {isCopied && <p>Copied</p>}
-        {permissions.readContent && pinnedValues && (
+        {permissions.readContent && pinnedValues && pinnedValues.length > 0 ? (
           <PinnedList>
             {pinnedValues.map((props, index) => (
               <PinnedLink
@@ -105,6 +107,15 @@ const Links = ({ id, location }) => {
               />
             ))}
           </PinnedList>
+        ) : !permissions.updateContent && (
+          <>
+            <NameHeader>
+              This bucket is currently empty...
+            </NameHeader>
+            <NameSubHeader>
+              If this is not expected, contact to your PIN moderator.
+            </NameSubHeader>
+          </>
         )}
         {permissions.updateContent && (
           <>
