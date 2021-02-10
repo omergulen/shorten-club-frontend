@@ -78,6 +78,13 @@ const SiteHeader = styled.header`
   justify-content: center;
 `
 
+const PHButton = styled.a`
+  display: flex;
+  width: 100%;
+  height: 54px;
+  justify-content: center;
+`;
+
 const Header = () => (
   <SiteHeader>
     <Content>
@@ -88,6 +95,17 @@ const Header = () => (
         </HomeLink> |
         <NavLink to="/links">Create Links</NavLink> |
         <NavLink to="/notes">Create Notes</NavLink>
+      </p>
+      <p>
+        <PHButton
+          href="https://www.producthunt.com/posts/shorten-club?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-shorten-club"
+          target="_blank"
+        >
+          <img
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=284067&theme=dark"
+            alt="👋 shorten.club - URL shortener to voice for Clubhouse 👋 | Product Hunt"
+          />
+        </PHButton>
       </p>
     </Content>
   </SiteHeader>
