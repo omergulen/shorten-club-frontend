@@ -8,6 +8,7 @@ const Title = styled(EditText)`
   line-height: 1%.4rem;
   margin: 0;
   padding: 0.3rem 0.2rem;
+  width: 100%;
 `;
 
 export default Title;
