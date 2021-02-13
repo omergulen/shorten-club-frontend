@@ -4,6 +4,8 @@ import copy from 'copy-to-clipboard';
 import Container from './common/Container';
 import NameHeader from './common/NameHeader';
 import NameSubHeader from './common/NameSubHeader';
+import EditableNameHeader from './common/EditableNameHeader';
+import EditableNameSubHeader from './common/EditableNameSubHeader';
 import SlugHeader from './common/SlugHeader';
 import OuterContainer from './common/OuterContainer';
 import PinButton from './common/PinButton';
@@ -15,6 +17,8 @@ import { getRecord, initialSlug, updateRecord } from "../api";
 
 const Links = ({ id, location }) => {
   const [slug, setSlug] = useState('');
+  const [bucketTitle, setBucketTitle] = useState('');
+  const [bucketDescription, setBucketDescription] = useState('');
   const [pinValue, setPinValue] = useState('');
   const [pinTitle, setPinTitle] = useState('');
   const [pinnedValues, setPinnedValues] = useState([]);
@@ -34,37 +38,66 @@ const Links = ({ id, location }) => {
       }, 1500);
   });
 
+  const handleInitialData = (data) => {
+    const { record: { content, slug }, permissions } = data;
+    setPermissions(permissions);
+    setSlug(slug);
+    if (Array.isArray(content)) {
+      setPinnedValues(content);
+    } else {
+      if (Object.keys(content).length > 0) {
+        const { pins, title, description } = content;
+        setBucketTitle(title);
+        setBucketDescription(description);
+        setPinnedValues(pins);
+      }
+    }
+    setLoading(false);
+  }
+
   useEffect(() => {
     const _getRecord = async (id) => {
       const res = await getRecord(id);
-      const { record: { content, slug }, permissions } = res.data;
-      setPermissions(permissions);
-      setSlug(slug);
-      setPinnedValues(content);
-      setLoading(false);
+      handleInitialData(res.data);
     }
 
     const _createRecord = async () => {
       const res = await initialSlug('LINK');
-      const { record: { content, slug }, permissions } = res.data;
-      setPermissions(permissions);
-      setSlug(slug);
-      setPinnedValues(content);
-      setLoading(false);
+      handleInitialData(res.data);
     }
-
+    
     if (location && location.state && location.state.data) {
-      const { record: { content, slug }, permissions } = location.state.data;
-      setPermissions(permissions);
-      setSlug(slug);
-      setPinnedValues(content);
-      setLoading(false);
+      handleInitialData(location.state.data);
     } else if (id) {
       _getRecord(id);
     } else {
       _createRecord();
     }
   }, [id]);
+
+  const handleBucketTitleChange = (e) => {
+    setBucketTitle(e);
+  };
+
+  const handleBucketDescriptionChange = (e) => {
+    setBucketDescription(e);
+  };
+
+  const handleBucketTitleSave = ({ value }) => {
+    handleUpdateRecord();
+  };
+
+  const handleBucketDescriptionSave = ({ value }) => {
+    handleUpdateRecord();
+  };
+
+  const handleUpdateRecord = (newPinnedValues) => {
+    updateRecord(slug, {
+      pins: newPinnedValues ? newPinnedValues : pinnedValues,
+      title: bucketTitle,
+      description: bucketDescription
+    });
+  }
 
   const handlePinValueChange = (event) => {
     setPinValue(event.target.value);
@@ -84,7 +117,7 @@ const Links = ({ id, location }) => {
       setPinValue('');
       setPinTitle('');
 
-      updateRecord(slug, newPinnedValues);
+      handleUpdateRecord(newPinnedValues);
     }
   };
   const handleDeleteClicked = (index) => {
@@ -106,6 +139,20 @@ const Links = ({ id, location }) => {
   return (
     <OuterContainer>
       <Container>
+        <EditableNameHeader
+          onChange={handleBucketTitleChange}
+          onSave={handleBucketTitleSave}
+          readonly={!permissions.updateContent}
+          value={bucketTitle}
+          placeholder={permissions.updateContent ? 'Title' : ''}
+        />
+        <EditableNameSubHeader
+          onChange={handleBucketDescriptionChange}
+          onSave={handleBucketDescriptionSave}
+          readonly={!permissions.updateContent}
+          value={bucketDescription}
+          placeholder={permissions.updateContent ? 'Description': ''}
+        />
         <SlugHeader onClick={handleAddressCopy}  className={'slug-header'}>
           {slug}
         </SlugHeader>

@@ -4,6 +4,8 @@ import copy from 'copy-to-clipboard';
 import Container from './common/Container';
 import NameHeader from './common/NameHeader';
 import NameSubHeader from './common/NameSubHeader';
+import EditableNameHeader from './common/EditableNameHeader';
+import EditableNameSubHeader from './common/EditableNameSubHeader';
 import SlugHeader from './common/SlugHeader';
 import OuterContainer from './common/OuterContainer';
 import PinButton from './common/PinButton';
@@ -16,41 +18,48 @@ import { getRecord, initialSlug, updateRecord } from "../api";
 
 const Notes = ({ id, location }) => {
   const [slug, setSlug] = useState('');
+  const [bucketTitle, setBucketTitle] = useState('');
+  const [bucketDescription, setBucketDescription] = useState('');
   const [pinNote, setPinNote] = useState('');
   const [pinTitle, setPinTitle] = useState('');
   const [pinnedValues, setPinnedValues] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isCopied, setIsCopied] = useState(false);
   const [permissions, setPermissions] = useState({
     readContent: true,
     updateContent: false
   });
-  const [isCopied, setIsCopied] = useState(false);
+  
+  const handleInitialData = (data) => {
+    const { record: { content, slug }, permissions } = data;
+    setPermissions(permissions);
+    setSlug(slug);
+    if (Array.isArray(content)) {
+      setPinnedValues(content);
+    } else {
+      if (Object.keys(content).length > 0) {
+        const { pins, title, description } = content;
+        setBucketTitle(title);
+        setBucketDescription(description);
+        setPinnedValues(pins);
+      }
+    }
+    setLoading(false);
+  }
 
   useEffect(() => {
     const _getRecord = async (id) => {
       const res = await getRecord(id);
-      const { record: { content, slug }, permissions } = res.data;
-      setPermissions(permissions);
-      setSlug(slug);
-      setPinnedValues(content);
-      setLoading(false);
+      handleInitialData(res.data);
     }
 
     const _createRecord = async () => {
       const res = await initialSlug('NOTE');
-      const { record: { content, slug }, permissions } = res.data;
-      setPermissions(permissions);
-      setSlug(slug);
-      setPinnedValues(content);
-      setLoading(false);
+      handleInitialData(res.data);
     }
-
+    
     if (location && location.state && location.state.data) {
-      const { record: { content, slug }, permissions } = location.state.data;
-      setPermissions(permissions);
-      setSlug(slug);
-      setPinnedValues(content);
-      setLoading(false);
+      handleInitialData(location.state.data);
     } else if (id) {
       _getRecord(id);
     } else {
@@ -58,6 +67,21 @@ const Notes = ({ id, location }) => {
     }
   }, [id]);
 
+  const handleBucketTitleChange = (e) => {
+    setBucketTitle(e);
+  };
+
+  const handleBucketDescriptionChange = (e) => {
+    setBucketDescription(e);
+  };
+
+  const handleBucketTitleSave = ({ value }) => {
+    handleUpdateRecord();
+  };
+
+  const handleBucketDescriptionSave = ({ value }) => {
+    handleUpdateRecord();
+  };
 
   const handlePinNoteValueChange = (event) => {
     setPinNote(event.target.value);
@@ -89,7 +113,15 @@ const Notes = ({ id, location }) => {
   };
 
   const handlePinnedNoteSave = (_, index) => {
-    updateRecord(slug, pinnedValues);
+    handleUpdateRecord();
+  }
+
+  const handleUpdateRecord = (newPinnedValues) => {
+    updateRecord(slug, {
+      pins: newPinnedValues ? newPinnedValues : pinnedValues,
+      title: bucketTitle,
+      description: bucketDescription
+    });
   }
 
   const handlePinnedNoteBodyChange = (value, index) => {
@@ -113,7 +145,7 @@ const Notes = ({ id, location }) => {
       setPinNote('');
       setPinTitle('');
 
-      updateRecord(slug, newPinnedValues);
+      handleUpdateRecord(newPinnedValues);
     }
   };
 
@@ -136,6 +168,20 @@ const Notes = ({ id, location }) => {
   return (
     <OuterContainer>
       <Container>
+        <EditableNameHeader
+          onChange={handleBucketTitleChange}
+          onSave={handleBucketTitleSave}
+          readonly={!permissions.updateContent}
+          value={bucketTitle}
+          placeholder={permissions.updateContent ? 'Title' : ''}
+        />
+        <EditableNameSubHeader
+          onChange={handleBucketDescriptionChange}
+          onSave={handleBucketDescriptionSave}
+          readonly={!permissions.updateContent}
+          value={bucketDescription}
+          placeholder={permissions.updateContent ? 'Description': ''}
+        />
         <SlugHeader onClick={handleAddressCopy} className={'slug-header'}>
           {slug}
         </SlugHeader>
