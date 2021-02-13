@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import copy from 'copy-to-clipboard';
 
 import Container from './common/Container';
@@ -12,6 +12,7 @@ import PinButton from './common/PinButton';
 import PinInput from './common/PinInput';
 import PinnedLink from "./common/PinnedLink";
 import PinnedList from "./common/PinnedList";
+import SEO from "../components/seo";
 
 import { getRecord, initialSlug, updateRecord } from "../api";
 
@@ -28,15 +29,21 @@ const Links = ({ id, location }) => {
     updateContent: true
   });
   const [isCopied, setIsCopied] = useState(false);
-  const handleAddressCopy = useCallback((event) => {
-      const slug = event.target.innerText;
-      const url = `https://shorten.club/${slug}`
-      copy(url);
-      setIsCopied(true);
-      setTimeout(() => {
-          setIsCopied(false);
-      }, 1500);
-  });
+
+  const seoTitle = useMemo(() => {
+    return bucketTitle ? bucketTitle : "shorten.club";
+  }, [bucketTitle]);
+
+  const seoKeywords = useMemo(() => {
+    if (bucketDescription) {
+      const words = bucketDescription.match(/\b(\w+)\b/g);
+      const wordsSet = new Set(words);
+      const wordsArr = Array.from(wordsSet);
+      return wordsArr;
+    }
+
+    return [`clubhouse`, `url`, `shortener`, 'resource', 'share'];
+  }, [bucketDescription]);
 
   const handleInitialData = (data) => {
     const { record: { content, slug }, permissions } = data;
@@ -126,6 +133,16 @@ const Links = ({ id, location }) => {
     setPinnedValues(array);
   };
 
+  const handleAddressCopy = useCallback((event) => {
+    const slug = event.target.innerText;
+    const url = `https://shorten.club/${slug}`
+    copy(url);
+    setIsCopied(true);
+    setTimeout(() => {
+        setIsCopied(false);
+    }, 1500);
+  });
+
   if (loading) {
     return (
       <OuterContainer>
@@ -139,6 +156,7 @@ const Links = ({ id, location }) => {
   return (
     <OuterContainer>
       <Container>
+        <SEO title={seoTitle} keywords={seoKeywords} />
         <EditableNameHeader
           onChange={handleBucketTitleChange}
           onSave={handleBucketTitleSave}

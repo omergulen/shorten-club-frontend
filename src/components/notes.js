@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo,  useState } from "react";
 import copy from 'copy-to-clipboard';
 
 import Container from './common/Container';
@@ -13,6 +13,7 @@ import PinInput from './common/PinInput';
 import PinnedList from './common/PinnedList';
 import PinnedNote from './common/PinnedNote';
 import PinTextarea from './common/PinTextarea';
+import SEO from "../components/seo";
 
 import { getRecord, initialSlug, updateRecord } from "../api";
 
@@ -29,6 +30,21 @@ const Notes = ({ id, location }) => {
     readContent: true,
     updateContent: false
   });
+
+  const seoTitle = useMemo(() => {
+    return bucketTitle ? bucketTitle : "shorten.club";
+  }, [bucketTitle]);
+
+  const seoKeywords = useMemo(() => {
+    if (bucketDescription) {
+      const words = bucketDescription.match(/\b(\w+)\b/g);
+      const wordsSet = new Set(words);
+      const wordsArr = Array.from(wordsSet);
+      return wordsArr;
+    }
+
+    return [`clubhouse`, `url`, `shortener`, 'resource', 'share'];
+  }, [bucketDescription]);
   
   const handleInitialData = (data) => {
     const { record: { content, slug }, permissions } = data;
@@ -168,6 +184,7 @@ const Notes = ({ id, location }) => {
   return (
     <OuterContainer>
       <Container>
+        <SEO title={seoTitle} keywords={seoKeywords} />
         <EditableNameHeader
           onChange={handleBucketTitleChange}
           onSave={handleBucketTitleSave}
