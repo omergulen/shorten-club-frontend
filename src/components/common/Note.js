@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import { EditText } from 'react-edit-text';
+import { EditTextarea } from 'react-edit-text';
 
-const Note = styled(EditText)`
+const Note = styled(EditTextarea)`
   color: #5a5656;
   font-size: 1rem;
   font-weight: 500;
