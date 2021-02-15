@@ -29,11 +29,15 @@ const PinnedNote = ({
   }, [note]);
 
   return (
-    <PinnedItem style={{
-      lineHeight: '1rem',
-      textAlign: 'left',
-      color: '#333333',
-    }}>
+    <PinnedItem
+      className={updateContent ? 'draggable' : ''}
+      style={{
+        color: '#333333',
+        lineHeight: '1rem',
+        padding: '1rem 2rem',
+        textAlign: 'left',
+      }}
+    >
       {updateContent && (
         <DeleteButton onClick={handleDelete}>
           X

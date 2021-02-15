@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 import copy from 'copy-to-clipboard';
 
 import Container from './common/Container';
@@ -15,6 +17,29 @@ import PinnedList from "./common/PinnedList";
 import SEO from "../components/seo";
 
 import { getRecord, initialSlug, updateRecord } from "../api";
+
+const SortablePinnedItem = SortableElement((props) => (
+  <PinnedLink
+    {...props}
+  />
+));
+
+const SortablePinnedList = SortableContainer(({ pinnedValues, permissions, handleDeleteClicked }) => {
+  return (
+    <PinnedList>
+      {pinnedValues.map((props, index) => (
+        <SortablePinnedItem
+          disabled={!permissions.updateContent}
+          handleDelete={() => handleDeleteClicked(index)}
+          index={index}
+          key={index}
+          updateContent={permissions.updateContent}
+          {...props}
+        />
+      ))}
+    </PinnedList>
+  );
+});
 
 const Links = ({ id, location }) => {
   const [slug, setSlug] = useState('');
@@ -143,6 +168,12 @@ const Links = ({ id, location }) => {
     }, 1500);
   });
 
+  const onSortEnd = ({oldIndex, newIndex}) => {
+    const newPinnedValues = arrayMove(pinnedValues, oldIndex, newIndex);
+    setPinnedValues(newPinnedValues);
+    handleUpdateRecord(newPinnedValues);
+  };
+
   if (loading) {
     return (
       <OuterContainer>
@@ -176,16 +207,13 @@ const Links = ({ id, location }) => {
         </SlugHeader>
         {isCopied && <p>Copied</p>}
         {permissions.readContent && pinnedValues && pinnedValues.length > 0 ? (
-          <PinnedList>
-            {pinnedValues.map((props, index) => (
-              <PinnedLink
-                handleDelete={() => handleDeleteClicked(index)}
-                updateContent={permissions.updateContent}
-                key={index}
-                {...props}
-              />
-            ))}
-          </PinnedList>
+          <SortablePinnedList
+            handleDeleteClicked={handleDeleteClicked}
+            lockAxis={'y'}
+            permissions={permissions}
+            pinnedValues={pinnedValues}
+            onSortEnd={onSortEnd}
+          />
         ) : !permissions.updateContent && (
           <>
             <NameHeader>

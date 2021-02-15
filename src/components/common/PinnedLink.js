@@ -5,7 +5,9 @@ import Link from "./Link";
 import PinnedItem from './PinnedItem';
 
 const PinnedLink = ({ title, url, handleDelete, updateContent }) => (
-  <PinnedItem>
+  <PinnedItem
+    className={updateContent ? 'draggable' : ''}
+  >
     <Link title={title} url={url} />
     {updateContent && (
       <DeleteButton onClick={handleDelete}>

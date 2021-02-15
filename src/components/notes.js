@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useMemo,  useState } from "react";
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 import copy from 'copy-to-clipboard';
 
 import Container from './common/Container';
@@ -16,6 +18,39 @@ import PinTextarea from './common/PinTextarea';
 import SEO from "../components/seo";
 
 import { getRecord, initialSlug, updateRecord } from "../api";
+
+const SortablePinnedItem = SortableElement((props) => (
+  <PinnedNote
+    {...props}
+  />
+));
+
+const SortablePinnedList = SortableContainer(({
+  handleDeleteClicked,
+  handlePinnedNoteBodyChange,
+  handlePinnedNoteTitleChange,
+  handlePinnedNoteSave,
+  permissions,
+  pinnedValues,
+}) => {
+  return (
+    <PinnedList>
+      {pinnedValues.map((props, index) => (
+        <SortablePinnedItem
+          disabled={!permissions.updateContent}
+          handleBodyChange={(event) => handlePinnedNoteBodyChange(event, index)}
+          handleNoteSave={(event) => handlePinnedNoteSave(event, index)}
+          handleTitleChange={(event) => handlePinnedNoteTitleChange(event, index)}
+          handleDelete={() => handleDeleteClicked(index)}
+          index={index}
+          key={index}
+          updateContent={permissions.updateContent}
+          {...props}
+        />
+      ))}
+    </PinnedList>
+  );
+});
 
 const Notes = ({ id, location }) => {
   const [slug, setSlug] = useState('');
@@ -171,6 +206,12 @@ const Notes = ({ id, location }) => {
     setPinnedValues(array);
   };
 
+  const onSortEnd = ({oldIndex, newIndex}) => {
+    const newPinnedValues = arrayMove(pinnedValues, oldIndex, newIndex);
+    setPinnedValues(newPinnedValues);
+    handleUpdateRecord(newPinnedValues);
+  };
+
   if (loading) {
     return (
       <OuterContainer>
@@ -204,20 +245,16 @@ const Notes = ({ id, location }) => {
         </SlugHeader>
         {isCopied && <p>Copied</p>}
         {permissions.readContent && pinnedValues && pinnedValues.length > 0 ? (
-          <PinnedList>
-          {pinnedValues.map((props, index) => (
-            <PinnedNote
-              handleDelete={() => handleDeleteClicked(index)}
-              handleBodyChange={(event) => handlePinnedNoteBodyChange(event, index)}
-              handleTitleChange={(event) => handlePinnedNoteTitleChange(event, index)}
-              handleNoteSave={(event) => handlePinnedNoteSave(event, index)}
-              index={index}
-              updateContent={permissions.updateContent}
-              key={index}
-              {...props}
-            />
-          ))}
-        </PinnedList>
+          <SortablePinnedList
+            handleDeleteClicked={handleDeleteClicked}
+            handlePinnedNoteBodyChange={handlePinnedNoteBodyChange}
+            handlePinnedNoteSave={handlePinnedNoteSave}
+            handlePinnedNoteTitleChange={handlePinnedNoteTitleChange}
+            lockAxis={'y'}
+            permissions={permissions}
+            pinnedValues={pinnedValues}
+            onSortEnd={onSortEnd}
+          />
         ) : !permissions.updateContent && (
           <>
             <NameHeader>

@@ -668,6 +668,23 @@ a::selection {
     background-size: contain;
 }
 
+.draggable {
+    position: relative;
+    cursor: grab;
+}
+
+.draggable:before {
+    content: " ";
+    position: absolute;
+    left: 16px;
+    top: calc(50% - 8px);
+    width: 16px;
+    height: 16px;
+    background-image: url("../images/drag.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);
