@@ -31,3 +31,52 @@ Currently, you can create buckets of links or notes. You can add, update, and de
 - Upcoming Events: [WIP]
 - A bucket of movies to watch: [https://shorten.club/665292](https://shorten.club/665292)
 - A bucket of resources for Saas Startups: [https://shorten.club/191626](https://shorten.club/191626)
+
+## Installation
+
+Installation is as simple as it gets.
+
+1) Clone the project to your computer:
+   
+```
+git clone https://github.com/omergulen/shorten-club-frontend.git
+```
+
+2) Install dependencies:
+```
+yarn
+```
+or
+```
+npm install
+```
+3) Run the project on localhost:
+```
+yarn develop
+```
+or 
+```
+npm run develop
+```
+
+That's it!
+
+   * Installation note for Apple Silicon M1 users
+     > One of the project's current dependencies that get installed is `sharp`. Currently, sharp Prebuilt libvips 8.10.5 binaries are not yet available for darwin-arm64v8. [See here.](https://sharp.pixelplumbing.com/install#apple-m1) \
+     > The work around proposed is to first install it with brew:
+      ```
+      brew install vips
+      ```
+     > Then you can proceed to finish the installation of all dependencies using the 2nd step.
+  
+
+
+## Contribution
+
+General open source contribution rules apply. Any contributions you make are greatly appreciated.
+
+1) Fork the Project
+2) Create your Feature Branch (`git checkout -b feature/x`)
+3) Commit your Changes (`git commit -m 'Add some feature'`)
+4) Push to the Branch (`git push origin feature/x`)
+5) Open a Pull Request
